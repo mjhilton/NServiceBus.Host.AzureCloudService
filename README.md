@@ -1,6 +1,6 @@
-# Azure Hosting for NServiceBus
+# Azure Cloud Service Hosting for NServiceBus
 
-The Azure hosting for NServiceBus enables NServiceBus endpoints hosting in Cloud Services. 
+The Azure hosting for NServiceBus enables NServiceBus endpoints hosting in Azure Cloud Services. 
 
 ## Documentation
 
