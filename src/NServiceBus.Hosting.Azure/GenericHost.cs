@@ -6,6 +6,7 @@ namespace NServiceBus.Hosting.Azure
     using System.Reflection;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Threading;
     using Config;
     using Config.ConfigurationSource;
     using Helpers;
@@ -63,7 +64,7 @@ namespace NServiceBus.Hosting.Azure
             try
             {
                 PerformConfiguration();
-                
+
                 if (bus != null && !bus.Settings.Get<bool>("Endpoint.SendOnly"))
                 {
                     bus.Start();
@@ -112,7 +113,8 @@ namespace NServiceBus.Hosting.Azure
 
             configuration.EndpointName(endpointNameToUse);
             configuration.AssembliesToScan(assembliesToScan);
-           
+            configuration.DefineCriticalErrorAction(OnCriticalError);
+
             if (SafeRoleEnvironment.IsAvailable)
             {
                 if (!IsHostedIn.ChildHostProcess())
@@ -130,13 +132,26 @@ namespace NServiceBus.Hosting.Azure
             }
 
             if (moreConfiguration != null)
-                {
-                    moreConfiguration(configuration);
-                }
+            {
+                moreConfiguration(configuration);
+            }
 
             specifier.Customize(configuration);
             RoleManager.TweakConfigurationBuilder(specifier, configuration);
-            bus = (UnicastBus) Bus.Create(configuration);
+            bus = (UnicastBus)Bus.Create(configuration);
+        }
+
+        // Windows hosting behavior when critical error occurs is suicide.
+        void OnCriticalError(string errorMessage, Exception exception)
+        {
+            if (Environment.UserInteractive)
+            {
+                Thread.Sleep(10000); // so that user can see on their screen the problem
+            }
+
+            var message = string.Format("The following critical error was encountered by NServiceBus:\n{0}\nNServiceBus is shutting down.", errorMessage);
+            LogManager.GetLogger(typeof(GenericHost)).Fatal(message);
+            Environment.FailFast(message, exception);
         }
 
         string[] AddProfilesFromConfiguration(IEnumerable<string> args)

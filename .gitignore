@@ -79,3 +79,9 @@ src/scaffolding.config
 
 # Approval tests temp file
 *.received.*
+
+# do not exclude these libraries (hard dependency on old libraries)
+!src/lib
+
+# ILMerge is required by project
+!tools/IlMerge
