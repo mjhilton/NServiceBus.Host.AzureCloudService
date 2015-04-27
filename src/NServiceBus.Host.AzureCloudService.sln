@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Hosting.Azure.H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Host.AzureCloudService.Tests", "Tests\NServiceBus.Host.AzureCloudService.Tests.csproj", "{E25B5433-7166-4C10-A76E-C0546F9E2497}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget.packaging", "nuget.packaging", "{2B3D135C-1EA2-4773-A9B6-D22A216A4ED5}"
+	ProjectSection(SolutionItems) = preProject
+		..\packaging\nuget\nservicebus.hosting.azure.hostprocess.nuspec = ..\packaging\nuget\nservicebus.hosting.azure.hostprocess.nuspec
+		..\packaging\nuget\nservicebus.hosting.azure.nuspec = ..\packaging\nuget\nservicebus.hosting.azure.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
