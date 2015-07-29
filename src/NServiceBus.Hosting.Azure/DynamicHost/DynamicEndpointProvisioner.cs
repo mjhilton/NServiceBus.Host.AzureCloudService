@@ -14,6 +14,8 @@ namespace NServiceBus.Hosting.Azure
 
         public bool RecycleRoleOnError { get; set; }
 
+        public bool RemoveSourceZipOnDeprovision { get; set; }
+
         public void Provision(IEnumerable<EndpointToHost> endpoints)
         {
             try
@@ -45,6 +47,9 @@ namespace NServiceBus.Hosting.Azure
             {
                 var path = Path.Combine(localResource, endpoint.EndpointName);
                 Directory.Delete(path, true);
+
+                var sourceZip = Path.Combine(localResource, endpoint.EndpointName, ".zip");
+                File.Delete(sourceZip);
             }
         }
     }
